@@ -1,0 +1,20 @@
+﻿<Page
+    x:Class="HAXCSolar.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HAXCSolar"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+  <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Image x:Name="lcarsBaseImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="/Assets/P2_Screen_Base_1280x960.jpg" />
+
+    <Rectangle x:Name="rectArray01" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="158,560,425,435" Width="50" Height="25" />
+    <Rectangle x:Name="rectArray02" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="236,560,347,435"  Width="50" Height="25" />
+
+    <Rectangle x:Name="rectUsage" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="412,560,171,435" Width="50" Height="25"  />
+    <Rectangle x:Name="rectReserve" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="490,560,93,435"  Width="50" Height="25"  />
+
+  </Grid>
+</Page>
