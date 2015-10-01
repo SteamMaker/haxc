@@ -5,15 +5,14 @@
     xmlns:local="using:HAXCSolar"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" 
-    Width="960" 
-    Height="1280">
+    mc:Ignorable="d" >
+  <!-- Width="960" Height="1280" -->
 
   <Grid x:Name="MainLayout" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
     <!-- Margin="-12,1,12,-1" -->
 
     <!-- LCARS Background Image -->
-    <Image x:Name="LcarsBaseImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="/Assets/P2_Screen_Base_1280x960.jpg" Grid.ColumnSpan="13" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" />
+    <Image x:Name="LcarsBaseImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="/Assets/P2_Screen_Base_1280x960.jpg" Stretch="Fill" Grid.ColumnSpan="13" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" />
 
 
     <!-- LCARS Controls Layout Grid -->
@@ -45,17 +44,15 @@
         <RowDefinition Height="47*" />
         <RowDefinition Height="119*" />
       </Grid.RowDefinitions>
-    
-      <Slider x:Name="sliderArray01" Minimum="0" Maximum="100" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
-      <Slider x:Name="sliderArray02" Minimum="0" Maximum="100" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
-      <Slider x:Name="sliderUseage" Minimum="0" Maximum="100" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
-      <Slider x:Name="sliderReserve" Minimum="0" Maximum="100" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
 
-      <!--<Rectangle x:Name="rectArray01" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="235,712,640,523" Width="85" Height="45" />-->
-      <!--
-      <Rectangle x:Name="rectArray02" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="358,712,517,523" Width="85" Height="45" />
-      <Rectangle x:Name="rectUseage" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="614,712,261,523" Width="85" Height="45" />
-      <Rectangle x:Name="rectReserve" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="737,712,138,523" Width="85" Height="45" />-->
+      <Slider x:Name="sliderArray01" Minimum="0" Maximum="1023" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
+      <Slider x:Name="sliderArray02" Minimum="0" Maximum="1023" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
+      <Slider x:Name="sliderUseage" Minimum="0" Maximum="1023" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
+      <Slider x:Name="sliderReserve" Minimum="0" Maximum="1023" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
+
+      <Button x:Name="OnButton" Content="ON" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FCCC" Margin="10" Click="OnButton_Click" IsEnabled="False" />
+      <Button x:Name="OffButton" Content="OFF" Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FCCC" Margin="10" Click="OffButton_Click" IsEnabled="False" />
+
     </Grid>
   </Grid>
 </Page>

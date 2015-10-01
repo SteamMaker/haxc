@@ -44,6 +44,17 @@
   </Applications>
 
   <Capabilities>
+    <!-- Additional capabilities added per: http://ms-iot.github.io/content/en-US/win10/SetupPCWRA.htm#option-1-download-the-windows-remote-arduino-experience-app-from-the-microsoft-store -->
+
+    <!-- Enabling Network Capabilities -->
+    <Capability Name="privateNetworkClientServer"/>
     <Capability Name="internetClient" />
+
+    <!-- Enabling USB Capabilities -->
+    <DeviceCapability Name="serialcommunication">
+      <Device Id="any">
+        <Function Type="name:serialPort"/>
+      </Device>
+    </DeviceCapability>
   </Capabilities>
 </Package>
