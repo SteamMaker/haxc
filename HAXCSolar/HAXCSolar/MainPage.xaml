@@ -59,7 +59,7 @@
       <TextBlock x:Name="textReserve" Text="0" FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="10" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
       <Canvas x:Name="fakeGraphCanvas" Grid.Row="7" Grid.Column="6" Grid.ColumnSpan="7" Background="Transparent" Margin="10,10,0,10">
-        <Polyline StrokeStartLineCap="Round" StrokeLineJoin="Round" StrokeEndLineCap="Round" x:Name="fakeGraph" Stroke="Blue" StrokeThickness="10" Canvas.Left="0" Canvas.Top="0" />
+        <Polyline StrokeStartLineCap="Round" StrokeLineJoin="Round" StrokeEndLineCap="Round" x:Name="fakeGraph" Stroke="#FFB66700" StrokeThickness="10" Canvas.Left="0" Canvas.Top="0" />
       </Canvas>
 
     </Grid>
