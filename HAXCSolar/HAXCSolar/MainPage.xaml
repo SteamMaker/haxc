@@ -5,16 +5,57 @@
     xmlns:local="using:HAXCSolar"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" 
+    Width="960" 
+    Height="1280">
 
-  <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Image x:Name="lcarsBaseImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="/Assets/P2_Screen_Base_1280x960.jpg" />
+  <Grid x:Name="MainLayout" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+    <!-- Margin="-12,1,12,-1" -->
 
-    <Rectangle x:Name="rectArray01" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="158,560,425,435" Width="50" Height="25" />
-    <Rectangle x:Name="rectArray02" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="236,560,347,435"  Width="50" Height="25" />
+    <!-- LCARS Background Image -->
+    <Image x:Name="LcarsBaseImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="/Assets/P2_Screen_Base_1280x960.jpg" Grid.ColumnSpan="13" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" />
 
-    <Rectangle x:Name="rectUsage" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="412,560,171,435" Width="50" Height="25"  />
-    <Rectangle x:Name="rectReserve" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="490,560,93,435"  Width="50" Height="25"  />
 
+    <!-- LCARS Controls Layout Grid -->
+    <Grid x:Name="LcarsLayout">
+      <!-- ColumnDefinition Width Multipliers must add up to 960 -->
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="172*"/>
+        <ColumnDefinition Width="60*"/>
+        <ColumnDefinition Width="93*"/>
+        <ColumnDefinition Width="28*"/>
+        <ColumnDefinition Width="93*"/>
+        <ColumnDefinition Width="60*"/>
+        <ColumnDefinition Width="45*"/>
+        <ColumnDefinition Width="60*"/>
+        <ColumnDefinition Width="93*"/>
+        <ColumnDefinition Width="28*"/>
+        <ColumnDefinition Width="93*"/>
+        <ColumnDefinition Width="60*"/>
+        <ColumnDefinition Width="75*"/>
+      </Grid.ColumnDefinitions>
+      <!-- RowDefinition Height Multipliers must add up to 1280 -->
+      <Grid.RowDefinitions>
+        <RowDefinition Height="48*" />
+        <RowDefinition Height="60*" />
+        <RowDefinition Height="659*" />
+        <RowDefinition Height="60*" />
+        <RowDefinition Height="91*" />
+        <RowDefinition Height="196*" />
+        <RowDefinition Height="47*" />
+        <RowDefinition Height="119*" />
+      </Grid.RowDefinitions>
+    
+      <Slider x:Name="sliderArray01" Minimum="0" Maximum="100" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
+      <Slider x:Name="sliderArray02" Minimum="0" Maximum="100" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
+      <Slider x:Name="sliderUseage" Minimum="0" Maximum="100" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
+      <Slider x:Name="sliderReserve" Minimum="0" Maximum="100" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
+
+      <!--<Rectangle x:Name="rectArray01" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="235,712,640,523" Width="85" Height="45" />-->
+      <!--
+      <Rectangle x:Name="rectArray02" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="358,712,517,523" Width="85" Height="45" />
+      <Rectangle x:Name="rectUseage" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="614,712,261,523" Width="85" Height="45" />
+      <Rectangle x:Name="rectReserve" Fill="Yellow" RadiusX="8" RadiusY="8" Margin="737,712,138,523" Width="85" Height="45" />-->
+    </Grid>
   </Grid>
 </Page>

@@ -5,4 +5,12 @@
     xmlns:local="using:HAXCSolar"
     RequestedTheme="Light">
 
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles/HAXCStyles.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>    
+
 </Application>
