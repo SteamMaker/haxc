@@ -2,6 +2,7 @@
 using Microsoft.Maker.Serial;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -37,14 +38,24 @@ namespace HAXCSolar
     int numPoints = 0;
     int maxY = 0;
 
+    UInt16 pulseCount = 0;
+    long lastMillis = 0;
+    long sampleMillis = 250;
+
 
     public MainPage()
     {
       this.InitializeComponent();
 
-      connection = new UsbSerial("VID_2341", "PID_0043");
+      //USB\VID_2A03&PID_0043
+      //"VID_2341", "PID_0043"
+      //"VID_2A03", "PID_0043"
+      //connection = new UsbSerial("VID_2341", "PID_0043");
+      connection = new UsbSerial("VID_2A03", "PID_0043");
       arduino = new RemoteDevice(connection);
       arduino.DeviceReady += Arduino_DeviceReady;
+      arduino.DigitalPinUpdated += Arduino_DigitalPinUpdated;
+      arduino.AnalogPinUpdated += Arduino_AnalogPinUpdated;
 
 
       connection.begin(57600, SerialConfig.SERIAL_8N1);
@@ -54,6 +65,39 @@ namespace HAXCSolar
       timer.Tick += Timer_Tick;
       timer.Start();
 
+    }
+
+    private async void CalcRpm()
+    {
+      long millis = ((App)App.Current).Stopwatch.ElapsedMilliseconds;
+      double elapsedMillis = millis - lastMillis;
+      if (elapsedMillis >= sampleMillis)
+      {
+        lastMillis = millis;
+        long rpm = (long)(pulseCount * (60000 / elapsedMillis));
+        await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler( () => {
+          rpmText.Text = rpm.ToString();
+        }));
+        pulseCount = 0;
+
+      }
+    }
+
+    private void Arduino_AnalogPinUpdated(byte pin, ushort value)
+    {
+      //if (pin == 0)
+      //{
+      //  Debug.WriteLine("Analog Pin: {0}  Value: {1}", pin, value);
+      //}
+
+    }
+
+    private void Arduino_DigitalPinUpdated(byte pin, PinState state)
+    {
+      if (pin == 2 && state == PinState.HIGH) {
+        pulseCount++;
+      }
+      //Debug.WriteLine("Digital Pin: {0}  State: {1}", pin, state);
     }
 
     private void Timer_Tick(object sender, object e)
@@ -80,6 +124,9 @@ namespace HAXCSolar
         sliderUseage.Value = mappedVal03; ;
         sliderReserve.Value = mappedVal04; ;
 
+        PinState pin2State = arduino.digitalRead(2);
+        arduino.digitalWrite(13, pin2State);
+
         if (points == null)
         {
           InitPoints();
@@ -88,6 +135,8 @@ namespace HAXCSolar
         {
           ShiftPoints();
         }
+
+        CalcRpm();
       }
     }
 
@@ -152,6 +201,7 @@ namespace HAXCSolar
 
       //set digital pin 13 to OUTPUT
       arduino.pinMode(13, PinMode.OUTPUT);
+      arduino.pinMode(2, PinMode.INPUT);
 
       //set analog pin A0 to ANALOG INPUT
       arduino.pinMode("A0", PinMode.ANALOG);
