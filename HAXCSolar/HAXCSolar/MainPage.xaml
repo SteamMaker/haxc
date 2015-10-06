@@ -1,4 +1,4 @@
-﻿<Page
+﻿<Page xmlns:Controls="using:HAXCSolar.Controls" 
     x:Class="HAXCSolar.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,6 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" >
   <!-- Width="960" Height="1280" -->
+
+  <Page.Resources>
+    <local:PercentageColorConverter x:Key="PercentageColorConverter" />
+    <SolidColorBrush x:Key="GraphGridLineStroke" Color="#FF666666" />
+  </Page.Resources>
 
   <Grid x:Name="MainLayout" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
     <!-- Margin="-12,1,12,-1" -->
@@ -45,15 +50,60 @@
         <RowDefinition Height="119*" />
       </Grid.RowDefinitions>
 
-      <Slider x:Name="sliderArray01" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A0, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" IsEnabled="False" />
-      <Slider x:Name="sliderArray02" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A1, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
-      <Slider x:Name="sliderUseage" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A2, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
-      <Slider x:Name="sliderReserve" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A3, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
+      <!--<Slider x:Name="sliderA0" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A0, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" IsEnabled="False" />-->
+      <Slider x:Name="sliderA0" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A0, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="{x:Bind A0, Mode=OneWay, FallbackValue=0, Converter={StaticResource PercentageColorConverter}}" IsEnabled="False" />
+      <Slider x:Name="sliderA1" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A1, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="{x:Bind A1, Mode=OneWay, FallbackValue=0, Converter={StaticResource PercentageColorConverter}}" IsEnabled="False" />
+      <Slider x:Name="sliderA2" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A2, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="{x:Bind A2, Mode=OneWay, FallbackValue=0, Converter={StaticResource PercentageColorConverter}, ConverterParameter=false}" IsEnabled="False" />
+      <Slider x:Name="sliderA3" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A3, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="{x:Bind A3, Mode=OneWay, FallbackValue=0, Converter={StaticResource PercentageColorConverter}}" IsEnabled="False" />
 
-      <TextBlock x:Name="textArray01" Text="{x:Bind A0, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="2" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-      <TextBlock x:Name="textArray02" Text="{x:Bind A1, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="4" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-      <TextBlock x:Name="textUseage" Text="{x:Bind A2, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="8" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-      <TextBlock x:Name="textReserve" Text="{x:Bind A3, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="10" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+      <TextBlock x:Name="textA0" Text="{x:Bind A0, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="2" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+      <TextBlock x:Name="textA1" Text="{x:Bind A1, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="4" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+      <TextBlock x:Name="textA2" Text="{x:Bind A2, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="8" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+      <TextBlock x:Name="textA3" Text="{x:Bind A3, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="10" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+      <Grid Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"  >
+        <Ellipse Width="100" Height="100" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="80" Height="80" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="60" Height="60" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="40" Height="40" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="20" Height="20" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="1" Y1="0" X2="1" Y2="110" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="0" Y1="1" X2="110" Y2="1" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Controls:CircularProgressBar HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{x:Bind A0, Mode=OneWay, FallbackValue=0}" SegmentColor="{x:Bind A0, Mode=OneWay, FallbackValue=0, Converter={StaticResource PercentageColorConverter}}" StrokeThickness="50"  Radius="25" IsClockwise="True" Opacity=".75"  />
+      </Grid>
+
+      <Grid Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="2"  >
+        <Ellipse Width="100" Height="100" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="80" Height="80" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="60" Height="60" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="40" Height="40" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="20" Height="20" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="1" Y1="0" X2="1" Y2="110" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="0" Y1="1" X2="110" Y2="1" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Controls:CircularProgressBar HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{x:Bind A1, Mode=OneWay, FallbackValue=0}" SegmentColor="{x:Bind A1, Mode=OneWay, FallbackValue=0, Converter={StaticResource PercentageColorConverter}}" StrokeThickness="50"  Radius="25" IsClockwise="True" Opacity=".75"  />
+      </Grid>
+
+      <Grid Grid.Row="5" Grid.Column="7" Grid.ColumnSpan="2"  >
+        <Ellipse Width="100" Height="100" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="80" Height="80" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="60" Height="60" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="40" Height="40" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="20" Height="20" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="1" Y1="0" X2="1" Y2="110" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="0" Y1="1" X2="110" Y2="1" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Controls:CircularProgressBar HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{x:Bind A2, Mode=OneWay, FallbackValue=0}" SegmentColor="{x:Bind A2, Mode=OneWay, FallbackValue=0, Converter={StaticResource PercentageColorConverter}, ConverterParameter=false}" StrokeThickness="50"  Radius="25" IsClockwise="True" Opacity=".75"  />
+      </Grid>
+
+      <Grid Grid.Row="5" Grid.Column="10" Grid.ColumnSpan="2"  >
+        <Ellipse Width="100" Height="100" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="80" Height="80" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="60" Height="60" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="40" Height="40" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Ellipse Width="20" Height="20" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="1" Y1="0" X2="1" Y2="110" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="0" Y1="1" X2="110" Y2="1" Stroke="{StaticResource GraphGridLineStroke}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Controls:CircularProgressBar HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{x:Bind A3, Mode=OneWay, FallbackValue=0}" SegmentColor="{x:Bind A3, Mode=OneWay, FallbackValue=0, Converter={StaticResource PercentageColorConverter}}" StrokeThickness="50"  Radius="25" IsClockwise="True" Opacity=".75"  />
+      </Grid>
 
       <!-- Used to display RPMs for hall effect test --> 
       <!--<TextBlock x:Name="rpmText" Grid.Row="5" Grid.Column="7" Grid.ColumnSpan="2" Text="0" FontSize="34" Foreground="White" FontWeight="Bold" />-->
