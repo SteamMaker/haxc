@@ -45,19 +45,20 @@
         <RowDefinition Height="119*" />
       </Grid.RowDefinitions>
 
-      <Slider x:Name="sliderArray01" Minimum="0" Maximum="100" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" IsEnabled="False" />
-      <Slider x:Name="sliderArray02" Minimum="0" Maximum="100" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
-      <Slider x:Name="sliderUseage" Minimum="0" Maximum="100" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
-      <Slider x:Name="sliderReserve" Minimum="0" Maximum="100" Orientation="Vertical" Value="0" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
+      <Slider x:Name="sliderArray01" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A0, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" IsEnabled="False" />
+      <Slider x:Name="sliderArray02" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A1, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
+      <Slider x:Name="sliderUseage" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A2, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
+      <Slider x:Name="sliderReserve" Minimum="0" Maximum="100" Orientation="Vertical" Value="{x:Bind A3, Mode=OneWay, FallbackValue=0}" Style="{StaticResource HAXCValueSliderStyle}" Grid.Row="2" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Stretch" Foreground="Yellow" />
 
-      <TextBlock x:Name="textArray01" Text="0" FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="2" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-      <TextBlock x:Name="textArray02" Text="0" FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="4" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-      <TextBlock x:Name="textUseage" Text="0" FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="8" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-      <TextBlock x:Name="textReserve" Text="0" FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="10" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+      <TextBlock x:Name="textArray01" Text="{x:Bind A0, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="2" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+      <TextBlock x:Name="textArray02" Text="{x:Bind A1, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="4" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+      <TextBlock x:Name="textUseage" Text="{x:Bind A2, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="8" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+      <TextBlock x:Name="textReserve" Text="{x:Bind A3, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="10" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
       <Button x:Name="OnButton" Content="ON" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FCCC" Margin="10" Click="OnButton_Click" IsEnabled="False" />
       <Button x:Name="OffButton" Content="OFF" Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FCCC" Margin="10" Click="OffButton_Click" IsEnabled="False" />
       <TextBlock x:Name="rpmText" Grid.Row="5" Grid.Column="7" Grid.ColumnSpan="2" Text="0" FontSize="34" Foreground="White" FontWeight="Bold" />
+      <TextBlock x:Name="a0Text" Grid.Row="5" Grid.Column="10" Grid.ColumnSpan="2" Text="{x:Bind A0, Mode=OneWay, FallbackValue=0}" FontSize="34" Foreground="White" FontWeight="Bold" />
 
 
       <Canvas x:Name="fakeGraphCanvas" Grid.Row="7" Grid.Column="6" Grid.ColumnSpan="7" Background="Transparent" Margin="10,10,0,10">

@@ -16,6 +16,9 @@ Global
 		Remote Debug|ARM = Remote Debug|ARM
 		Remote Debug|x64 = Remote Debug|x64
 		Remote Debug|x86 = Remote Debug|x86
+		Remote Release|ARM = Remote Release|ARM
+		Remote Release|x64 = Remote Release|x64
+		Remote Release|x86 = Remote Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Debug|ARM.ActiveCfg = Debug|ARM
@@ -45,6 +48,15 @@ Global
 		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Remote Debug|x86.ActiveCfg = Remote Debug|ARM
 		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Remote Debug|x86.Build.0 = Remote Debug|ARM
 		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Remote Debug|x86.Deploy.0 = Remote Debug|ARM
+		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Remote Release|ARM.ActiveCfg = Remote Release|ARM
+		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Remote Release|ARM.Build.0 = Remote Release|ARM
+		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Remote Release|ARM.Deploy.0 = Remote Release|ARM
+		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Remote Release|x64.ActiveCfg = Remote Release|x64
+		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Remote Release|x64.Build.0 = Remote Release|x64
+		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Remote Release|x64.Deploy.0 = Remote Release|x64
+		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Remote Release|x86.ActiveCfg = Remote Release|ARM
+		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Remote Release|x86.Build.0 = Remote Release|ARM
+		{344CC565-67C8-4971-BC43-0B27BAC7D82F}.Remote Release|x86.Deploy.0 = Remote Release|ARM
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
