@@ -2,12 +2,14 @@
 using Microsoft.Maker.Serial;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Devices.Enumeration;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -27,22 +29,41 @@ namespace HAXCSolar
   /// </summary>
   public sealed partial class MainPage : Page, INotifyPropertyChanged
   {
+
+    #region Fields
+
+    //Used to connect to the arduino via the Windows-Remote-Wiring library
     IStream connection;
     RemoteDevice arduino;
     DispatcherTimer timer;
     bool arduinoReady = false;
+
+    //Used to set the scale of the sliders and text readouts for the analog sensors
+    UInt16 minLight = 675;     //This should map to the min value based on ambient light.  
+    UInt16 maxLight = 1023;  //This should always be the max analog input value possible.  1023 on an Uno
+
+    //Used for the fake graph at the bottom of the screen
     PointCollection points;
-
-    UInt16 minLight = 675;
-    UInt16 maxLight = 1023;
-
     int pointStep = 0;
     int numPoints = 0;
     int maxY = 0;
 
-    UInt16 pulseCount = 0;
-    long lastMillis = 0;
-    long sampleMillis = 250;
+    //Used for the flow meter testing
+    //UInt16 pulseCount = 0;
+    //long lastMillis = 0;
+    //long sampleMillis = 250;
+
+    #endregion Fields
+
+    #region Properties
+
+    private ConnectedDevicePresenter connectedDevicePresenter;
+
+    public ConnectedDevicePresenter ConnectedDevicePresenter
+    {
+      get { return connectedDevicePresenter; }
+      set { SetProperty(ref connectedDevicePresenter, value); }
+    }
 
     private int a0;
 
@@ -76,25 +97,22 @@ namespace HAXCSolar
       set { SetProperty(ref a3, value); }
     }
 
+    private DeviceInformation arduinoInfo;
 
+    public DeviceInformation ArduinoInfo
+    {
+      get { return arduinoInfo; }
+      set { arduinoInfo = value; }
+    }
 
+    #endregion Properties
 
     public MainPage()
     {
       this.InitializeComponent();
 
-      //USB\VID_2A03&PID_0043
-      //"VID_2341", "PID_0043"
-      //"VID_2A03", "PID_0043"
-      //connection = new UsbSerial("VID_2341", "PID_0043");
-      connection = new UsbSerial("VID_2A03", "PID_0043");
-      arduino = new RemoteDevice(connection);
-      arduino.DeviceReady += Arduino_DeviceReady;
-      arduino.DigitalPinUpdated += Arduino_DigitalPinUpdated;
-      arduino.AnalogPinUpdated += Arduino_AnalogPinUpdated;
-
-
-      connection.begin(57600, SerialConfig.SERIAL_8N1);
+      ConnectedDevicePresenter = new ConnectedDevicePresenter(Dispatcher);
+      ConnectedDevicePresenter.DevicesUpdated += ConnectedDevicePresenter_DevicesUpdated;
 
       timer = new DispatcherTimer();
       timer.Interval = TimeSpan.FromMilliseconds(100);
@@ -103,23 +121,57 @@ namespace HAXCSolar
 
     }
 
-    private async void CalcRpm()
+    private void ConnectedDevicePresenter_DevicesUpdated(object sender, EventArgs e)
     {
-      long millis = ((App)App.Current).Stopwatch.ElapsedMilliseconds;
-      double elapsedMillis = millis - lastMillis;
-      if (elapsedMillis >= sampleMillis)
-      {
-        lastMillis = millis;
-        long rpm = (long)(pulseCount * (60000 / elapsedMillis));
-        await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
-        {
-          rpmText.Text = rpm.ToString();
-        }));
-        pulseCount = 0;
+      InitArduino();
+    }
 
+    private void InitArduino()
+    {
+      //First find the arduino in the devices collection
+      if(ConnectedDevicePresenter.Devices != null)
+      {
+        this.ArduinoInfo = ConnectedDevicePresenter.Devices.FirstOrDefault((d) => d.Name.ToLower().StartsWith("arduino"));
+        if(ArduinoInfo != null)
+        {
+          connection = new UsbSerial(ArduinoInfo.GetVID(),ArduinoInfo.GetPID());
+
+          arduino = new RemoteDevice(connection);
+          arduino.DeviceReady += Arduino_DeviceReady;
+          arduino.DigitalPinUpdated += Arduino_DigitalPinUpdated;
+          arduino.AnalogPinUpdated += Arduino_AnalogPinUpdated;
+
+          connection.begin(57600, SerialConfig.SERIAL_8N1);
+
+        }
       }
     }
 
+    /// <summary>
+    /// Used to calcuate the RPM on a connected flow meter
+    /// </summary>
+    //private async void CalcRpm()
+    //{
+    //  long millis = ((App)App.Current).Stopwatch.ElapsedMilliseconds;
+    //  double elapsedMillis = millis - lastMillis;
+    //  if (elapsedMillis >= sampleMillis)
+    //  {
+    //    lastMillis = millis;
+    //    long rpm = (long)(pulseCount * (60000 / elapsedMillis));
+    //    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
+    //    {
+    //      rpmText.Text = rpm.ToString();
+    //    }));
+    //    pulseCount = 0;
+
+    //  }
+    //}
+
+    /// <summary>
+    /// Handles the AnalogPinUpdated event for the connected arduino
+    /// </summary>
+    /// <param name="pin">The pin that was updated</param>
+    /// <param name="value">the value on the pin</param>
     private async void Arduino_AnalogPinUpdated(byte pin, ushort value)
     {
       switch (pin)
@@ -156,35 +208,78 @@ namespace HAXCSolar
 
     private void Arduino_DigitalPinUpdated(byte pin, PinState state)
     {
-      if (pin == 2 && state == PinState.HIGH)
+      ////Used for sample hall effect flow meter testing
+      //if (pin == 2 && state == PinState.HIGH)
+      //  {
+      //    pulseCount++;
+      //  }
+
+      //Supports a "calibration" button to set the slider ranges to match current ambient light. 
+      if (pin == 3)
       {
-        pulseCount++;
+        arduino.digitalWrite(13, state);
+        SetMinLight();
       }
     }
 
+    private void SetMinLight()
+    {
+      //minLight = (ushort)Math.Min(Math.Min(Math.Min(A0, A1), A2), A3);
+      minLight = arduino.analogRead("A0");
+    }
+
+
+    /// <summary>
+    /// The event handler for the dispatcher timer
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Timer_Tick(object sender, object e)
     {
       if (arduinoReady)
       {
-        if (points == null)
-        {
-          InitPoints();
-        }
-        else
-        {
-          ShiftPoints();
-        }
+        UpdateGraph();
 
-        CalcRpm();
+        //Calc RPM is used for the hall effect flow meter testing. 
+        //CalcRpm();
       }
     }
 
+    /// <summary>
+    /// Used to map an value from an input range to an output range
+    /// </summary>
+    /// <param name="Value">Value to be mapped</param>
+    /// <param name="InMin">Input range minimum value</param>
+    /// <param name="InMax">Input range maximum value</param>
+    /// <param name="OutMin">Output range minimum value</param>
+    /// <param name="OutMax">Output range maximum value</param>
+    /// <returns></returns>
     private double Map(double Value, double InMin, double InMax, double OutMin, double OutMax)
     {
       double val = (Value - InMin) * (OutMax - OutMin) / (InMax - InMin) + OutMin;
       return Math.Min(Math.Max(val, OutMin), OutMax);
     }
 
+
+    /// <summary>
+    /// Updates the display of the graph at the bottom of the screen
+    /// </summary>
+    private void UpdateGraph()
+    {
+      if (points == null)
+      {
+        InitPoints();
+      }
+      else
+      {
+        ShiftPoints();
+      }
+    }
+
+
+    /// <summary>
+    /// Initializes the collection of points of the graph at the bottom of the screen
+    /// </summary>
     private void InitPoints()
     {
       Random rnd = new Random();
@@ -198,13 +293,16 @@ namespace HAXCSolar
       for (int p = 0; p <= numPoints; p++)
       {
         //points.Add(new Point(p * pointStep, rnd.Next(maxY)));
-        points.Add(new Point(p * pointStep, 0));
+        points.Add(new Point(p * pointStep, maxY));
       }
 
       fakeGraph.Points = points;
     }
 
-
+    
+    /// <summary>
+    /// Shifts the graph point values to the left, and adds a new value at the end
+    /// </summary>
     private void ShiftPoints()
     {
       Random rnd = new Random();
@@ -226,40 +324,30 @@ namespace HAXCSolar
       points[lastPointNum] = lastPoint;
 
       fakeGraph.Points = points;
-
     }
 
+    /// <summary>
+    /// Sets up the connected arduino pins for use
+    /// </summary>
     private void Arduino_DeviceReady()
     {
-      //TODO
-      var action = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
-      {
-        OnButton.IsEnabled = true;
-        OffButton.IsEnabled = true;
-      }));
-
       //set digital pin 13 to OUTPUT
       arduino.pinMode(13, PinMode.OUTPUT);
-      arduino.pinMode(2, PinMode.INPUT);
 
-      //set analog pin A0 to ANALOG INPUT
+      //set digital pin 13 to OUTPUT
+
+      //Set digital pins 2 and 3 to INPUT
+      arduino.pinMode(2, PinMode.INPUT);
+      arduino.pinMode(3, PinMode.INPUT);
+
+      //set analog pin A0-A3 to ANALOG INPUT
       arduino.pinMode("A0", PinMode.ANALOG);
       arduino.pinMode("A1", PinMode.ANALOG);
       arduino.pinMode("A2", PinMode.ANALOG);
       arduino.pinMode("A3", PinMode.ANALOG);
 
-
+      //Set the internal flag to indicate that the arduino device is ready for use.
       arduinoReady = true;
-    }
-
-    private void OnButton_Click(object sender, RoutedEventArgs e)
-    {
-      arduino.digitalWrite(13, PinState.HIGH);
-    }
-
-    private void OffButton_Click(object sender, RoutedEventArgs e)
-    {
-      arduino.digitalWrite(13, PinState.LOW);
     }
 
     #region INotifyPropertyChanged Implementation

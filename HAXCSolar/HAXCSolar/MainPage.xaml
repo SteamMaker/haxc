@@ -55,10 +55,17 @@
       <TextBlock x:Name="textUseage" Text="{x:Bind A2, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="8" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
       <TextBlock x:Name="textReserve" Text="{x:Bind A3, Mode=OneWay, FallbackValue=0}"  FontSize="34" Foreground="White" FontWeight="Bold" Grid.Row="3" Grid.Column="10" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
-      <Button x:Name="OnButton" Content="ON" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FCCC" Margin="10" Click="OnButton_Click" IsEnabled="False" />
-      <Button x:Name="OffButton" Content="OFF" Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FCCC" Margin="10" Click="OffButton_Click" IsEnabled="False" />
-      <TextBlock x:Name="rpmText" Grid.Row="5" Grid.Column="7" Grid.ColumnSpan="2" Text="0" FontSize="34" Foreground="White" FontWeight="Bold" />
-      <TextBlock x:Name="a0Text" Grid.Row="5" Grid.Column="10" Grid.ColumnSpan="2" Text="{x:Bind A0, Mode=OneWay, FallbackValue=0}" FontSize="34" Foreground="White" FontWeight="Bold" />
+      <!-- Used to display RPMs for hall effect test --> 
+      <!--<TextBlock x:Name="rpmText" Grid.Row="5" Grid.Column="7" Grid.ColumnSpan="2" Text="0" FontSize="34" Foreground="White" FontWeight="Bold" />-->
+
+      <!-- Used to display list of connected devices -->
+      <!--<ItemsControl x:Name="ConnectedDevices" Foreground="White" Grid.Row="5" Grid.Column="10" Grid.ColumnSpan="2" ItemsSource="{x:Bind ConnectedDevicePresenter.Devices, Mode=OneWay,TargetNullValue=Null}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding Name}" />  
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>-->
 
 
       <Canvas x:Name="fakeGraphCanvas" Grid.Row="7" Grid.Column="6" Grid.ColumnSpan="7" Background="Transparent" Margin="10,10,0,10">
