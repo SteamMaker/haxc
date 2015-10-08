@@ -131,8 +131,11 @@ namespace HAXCSolar
       //First find the arduino in the devices collection
       if(ConnectedDevicePresenter.Devices != null)
       {
-        this.ArduinoInfo = ConnectedDevicePresenter.Devices.FirstOrDefault((d) => d.Name.ToLower().StartsWith("arduino"));
-        if(ArduinoInfo != null)
+        //Was searching by device name...
+        //this.ArduinoInfo = ConnectedDevicePresenter.Devices.FirstOrDefault((d) => d.Name.ToLower().StartsWith("arduino"));
+        //However, found that the name doesn't always start with "Arduino" so changing to see if searching for the PID works better...
+        this.ArduinoInfo = ConnectedDevicePresenter.Devices.FirstOrDefault((d) => d.GetPID().ToUpper()=="PID_0043");
+        if (ArduinoInfo != null)
         {
           connection = new UsbSerial(ArduinoInfo.GetVID(),ArduinoInfo.GetPID());
 
@@ -180,6 +183,7 @@ namespace HAXCSolar
           await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
           {
             this.A0 = (int)Map(value, minLight, maxLight, 0, 100);
+            //Debug.WriteLine("Pin: {0}, Value: {1}, Mapped: {2}", pin, value, A0);
           }));
           break;
         case 1:
@@ -204,6 +208,8 @@ namespace HAXCSolar
           break;
       }
 
+      //Debug.WriteLine("Pin: {0} Value: {1}", pin, value);
+
     }
 
     private void Arduino_DigitalPinUpdated(byte pin, PinState state)
@@ -225,7 +231,7 @@ namespace HAXCSolar
     private void SetMinLight()
     {
       //minLight = (ushort)Math.Min(Math.Min(Math.Min(A0, A1), A2), A3);
-      minLight = arduino.analogRead("A0");
+      //minLight = arduino.analogRead("A0");
     }
 
 

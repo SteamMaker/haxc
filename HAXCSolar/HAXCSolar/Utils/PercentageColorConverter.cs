@@ -21,7 +21,7 @@ namespace HAXCSolar
         bool.TryParse(parameter.ToString(), out notInverted);
       }
 
-      Debug.WriteLine("value type: ", value.GetType().Name);
+      //Debug.WriteLine("value type: ", value.GetType().Name);
 
       double percentage = 0;
       double.TryParse(value.ToString(), out percentage);

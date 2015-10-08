@@ -44,7 +44,7 @@ namespace HAXCSolar
 
     private async void DevicesEnumCompleted(DeviceWatcher sender, object args)
     {
-      Debug.WriteLine("USB Devices Enumeration Completed");
+      //Debug.WriteLine("USB Devices Enumeration Completed");
 
       await dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
       {
@@ -54,7 +54,7 @@ namespace HAXCSolar
 
     private async void DevicesAdded(DeviceWatcher sender, DeviceInformationUpdate args)
     {
-      Debug.WriteLine("Updated USB device: " + args.Id);
+      //Debug.WriteLine("Updated USB device: " + args.Id);
 
       await dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
       {
@@ -64,7 +64,7 @@ namespace HAXCSolar
 
     private async void DevicesRemoved(DeviceWatcher sender, DeviceInformationUpdate args)
     {
-      Debug.WriteLine("Removed USB device: " + args.Id);
+      //Debug.WriteLine("Removed USB device: " + args.Id);
 
       await dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
       {
