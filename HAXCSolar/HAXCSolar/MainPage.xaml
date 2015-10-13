@@ -105,7 +105,7 @@
         <Controls:CircularProgressBar HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{x:Bind A3, Mode=OneWay, FallbackValue=0}" SegmentColor="{x:Bind A3, Mode=OneWay, FallbackValue=0, Converter={StaticResource PercentageColorConverter}}" StrokeThickness="50"  Radius="25" IsClockwise="True" Opacity=".75"  />
       </Grid>
 
-      <!-- Used to display RPMs for hall effect test --> 
+      <!-- Used to display RPMs for hall effect test -->
       <!--<TextBlock x:Name="rpmText" Grid.Row="5" Grid.Column="7" Grid.ColumnSpan="2" Text="0" FontSize="34" Foreground="White" FontWeight="Bold" />-->
 
       <!-- Used to display list of connected devices -->
@@ -122,6 +122,70 @@
         <Polyline StrokeStartLineCap="Round" StrokeLineJoin="Round" StrokeEndLineCap="Round" x:Name="fakeGraph" Stroke="#FFB66700" StrokeThickness="10" Canvas.Left="0" Canvas.Top="0" />
       </Canvas>
 
+      <Button x:Name="SettingsButton" Content="Settings" Grid.Row="10" Grid.Column="0" Click="SettingsButton_Click" Background="Silver" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity="0"  />
+
+
+
     </Grid>
+
+    <Popup x:Name="SettingsPopup" MinWidth="520" MinHeight="320" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Border x:Name="SettingsBorder" Background="#CC000000" BorderBrush="#FFFD9F25" BorderThickness="10" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="520" MinHeight="320" >
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="15">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <TextBlock Text="SETTINGS" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+          <TextBlock Text="A0 Min:" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+          <Slider x:Name="a0MinSlider" Value="{x:Bind A0Min, Mode=TwoWay, FallbackValue=0}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Minimum="0" Maximum="1023" Width="320" Background="#66FFFFFF"  />
+          <TextBlock Text="{x:Bind A0Min, Mode=OneWay, FallbackValue=0}" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+
+          <TextBlock Text="A0 Max:" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+          <Slider x:Name="a0MaxSlider" Value="{x:Bind A0Max, Mode=TwoWay, FallbackValue=0}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Minimum="0" Maximum="1023" Width="320" Background="#66FFFFFF"  />
+          <TextBlock Text="{x:Bind A0Max, Mode=OneWay, FallbackValue=0}" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+
+          <TextBlock Text="A1 Min:" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+          <Slider x:Name="a1MinSlider" Value="{x:Bind A1Min, Mode=TwoWay, FallbackValue=0}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" Minimum="0" Maximum="1023" Width="320" Background="#66FFFFFF"  />
+          <TextBlock Text="{x:Bind A1Min, Mode=OneWay, FallbackValue=0}" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+
+          <TextBlock Text="A1 Max:" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+          <Slider x:Name="a1MaxSlider" Value="{x:Bind A1Max, Mode=TwoWay, FallbackValue=0}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" Minimum="0" Maximum="1023" Width="320" Background="#66FFFFFF"  />
+          <TextBlock Text="{x:Bind A1Max, Mode=OneWay, FallbackValue=0}" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+
+          <TextBlock Text="A2 Min:" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+          <Slider x:Name="a2MinSlider" Value="{x:Bind A2Min, Mode=TwoWay, FallbackValue=0}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" Minimum="0" Maximum="1023" Width="320" Background="#66FFFFFF"  />
+          <TextBlock Text="{x:Bind A2Min, Mode=OneWay, FallbackValue=0}" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+
+          <TextBlock Text="A2 Max:" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+          <Slider x:Name="a2MaxSlider" Value="{x:Bind A2Max, Mode=TwoWay, FallbackValue=0}" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" Minimum="0" Maximum="1023" Width="320" Background="#66FFFFFF"  />
+          <TextBlock Text="{x:Bind A2Max, Mode=OneWay, FallbackValue=0}" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+
+          <TextBlock Text="A3 Min:" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="7" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+          <Slider x:Name="a3MinSlider" Value="{x:Bind A3Min, Mode=TwoWay, FallbackValue=0}" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" Minimum="0" Maximum="1023" Width="320" Background="#66FFFFFF"  />
+          <TextBlock Text="{x:Bind A3Min, Mode=OneWay, FallbackValue=0}" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+
+          <TextBlock Text="A3 Max:" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="8" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+          <Slider x:Name="a3MaxSlider" Value="{x:Bind A3Max, Mode=TwoWay, FallbackValue=0}" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" Minimum="0" Maximum="1023" Width="320" Background="#66FFFFFF"  />
+          <TextBlock Text="{x:Bind A3Max, Mode=OneWay, FallbackValue=0}" FontSize="18" FontWeight="Bold" Foreground="White" Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+
+          <Button x:Name="PopupCloseButton" Grid.Row="9" Grid.Column="1" HorizontalAlignment="Right" Content="Close" Click="PopupCloseButton_Click" Background="White" />
+        </Grid>
+      </Border>
+    </Popup>
+    
   </Grid>
 </Page>

@@ -39,8 +39,8 @@ namespace HAXCSolar
     bool arduinoReady = false;
 
     //Used to set the scale of the sliders and text readouts for the analog sensors
-    UInt16 minLight = 675;     //This should map to the min value based on ambient light.  
-    UInt16 maxLight = 1023;  //This should always be the max analog input value possible.  1023 on an Uno
+    //UInt16 minLight = 675;     //This should map to the min value based on ambient light.  
+    //UInt16 maxLight = 1023;  //This should always be the max analog input value possible.  1023 on an Uno
 
     //Used for the fake graph at the bottom of the screen
     PointCollection points;
@@ -70,7 +70,27 @@ namespace HAXCSolar
     public int A0
     {
       get { return a0; }
-      set { SetProperty(ref a0, value); }
+      set
+      {
+        int newValue = (a0 + value) / 2;
+        SetProperty(ref a0, newValue);
+      }
+    }
+
+    private double a0Min = 675;  //675 was about ambient light inside the workshop
+
+    public double A0Min
+    {
+      get { return a0Min; }
+      set { SetProperty(ref a0Min, value); }
+    }
+
+    private double a0Max = 1023;
+
+    public double A0Max
+    {
+      get { return a0Max; }
+      set { SetProperty(ref a0Max, value); }
     }
 
     private int a1;
@@ -78,7 +98,27 @@ namespace HAXCSolar
     public int A1
     {
       get { return a1; }
-      set { SetProperty(ref a1, value); }
+      set
+      {
+        int newValue = (a1 + value) / 2;
+        SetProperty(ref a1, newValue);
+      }
+    }
+
+    private double a1Min = 675;  //675 was about ambient light inside the workshop
+
+    public double A1Min
+    {
+      get { return a1Min; }
+      set { SetProperty(ref a1Min, value); }
+    }
+
+    private double a1Max = 1023;
+
+    public double A1Max
+    {
+      get { return a1Max; }
+      set { SetProperty(ref a1Max, value); }
     }
 
     private int a2;
@@ -86,7 +126,33 @@ namespace HAXCSolar
     public int A2
     {
       get { return a2; }
-      set { SetProperty(ref a2, value); }
+      set
+      {
+        int newValue = (a2 + value) / 2;
+        SetProperty(ref a2, newValue);
+      }
+    }
+
+    private double a2Min = 512;  //0 = 0A for Current Sensor
+
+    public double A2Min
+    {
+      get { return a2Min; }
+      set
+      {
+        SetProperty(ref a2Min, value);
+      }
+    }
+
+    private double a2Max = 1023;  //5A for a 5A Current Sensor
+
+    public double A2Max
+    {
+      get { return a2Max; }
+      set
+      {
+        SetProperty(ref a2Max, value);
+      }
     }
 
     private int a3;
@@ -94,7 +160,27 @@ namespace HAXCSolar
     public int A3
     {
       get { return a3; }
-      set { SetProperty(ref a3, value); }
+      set
+      {
+        int newValue = (a3 + value) / 2;
+        SetProperty(ref a3, newValue);
+      }
+    }
+
+    private double a3Min = 0;  //0 = 0v = dead battery
+
+    public double A3Min
+    {
+      get { return a3Min; }
+      set { SetProperty(ref a3Min, value); }
+    }
+
+    private double a3Max = 555; //Should be about 13v for a 24v Sensor
+
+    public double A3Max
+    {
+      get { return a3Max; }
+      set { SetProperty(ref a3Max, value); }
     }
 
     private DeviceInformation arduinoInfo;
@@ -129,15 +215,15 @@ namespace HAXCSolar
     private void InitArduino()
     {
       //First find the arduino in the devices collection
-      if(ConnectedDevicePresenter.Devices != null)
+      if (ConnectedDevicePresenter.Devices != null)
       {
         //Was searching by device name...
         //this.ArduinoInfo = ConnectedDevicePresenter.Devices.FirstOrDefault((d) => d.Name.ToLower().StartsWith("arduino"));
         //However, found that the name doesn't always start with "Arduino" so changing to see if searching for the PID works better...
-        this.ArduinoInfo = ConnectedDevicePresenter.Devices.FirstOrDefault((d) => d.GetPID().ToUpper()=="PID_0043");
+        this.ArduinoInfo = ConnectedDevicePresenter.Devices.FirstOrDefault((d) => d.GetPID().ToUpper() == "PID_0043");
         if (ArduinoInfo != null)
         {
-          connection = new UsbSerial(ArduinoInfo.GetVID(),ArduinoInfo.GetPID());
+          connection = new UsbSerial(ArduinoInfo.GetVID(), ArduinoInfo.GetPID());
 
           arduino = new RemoteDevice(connection);
           arduino.DeviceReady += Arduino_DeviceReady;
@@ -182,32 +268,31 @@ namespace HAXCSolar
         case 0:
           await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
           {
-            this.A0 = (int)Map(value, minLight, maxLight, 0, 100);
-            //Debug.WriteLine("Pin: {0}, Value: {1}, Mapped: {2}", pin, value, A0);
-          }));
+            this.A0 = (int)Map(value, A0Min, A0Max, 0, 100);
+              //Debug.WriteLine("Pin: {0}, Value: {1}, Mapped: {2}", pin, value, A0);
+            }));
           break;
         case 1:
           await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
           {
-            this.A1 = (int)Map(value, minLight, maxLight, 0, 100);
+            this.A1 = (int)Map(value, A1Min, A1Max, 0, 100);
           }));
           break;
         case 2:
           await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
           {
-            this.A2 = (int)Map(value, minLight, maxLight, 0, 100);
+            this.A2 = (int)Map(value, A2Min, A2Max, 0, 100);
           }));
           break;
         case 3:
           await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
           {
-            this.A3 = (int)Map(value, minLight, maxLight, 0, 100);
+            this.A3 = (int)Map(value, A3Min, A3Max, 0, 100);
           }));
           break;
         default:
           break;
       }
-
       //Debug.WriteLine("Pin: {0} Value: {1}", pin, value);
 
     }
@@ -305,7 +390,7 @@ namespace HAXCSolar
       fakeGraph.Points = points;
     }
 
-    
+
     /// <summary>
     /// Shifts the graph point values to the left, and adds a new value at the end
     /// </summary>
@@ -326,7 +411,7 @@ namespace HAXCSolar
 
       Point lastPoint = (Point)points[lastPointNum];
       //lastPoint.Y = rnd.Next(maxY);
-      lastPoint.Y = maxY - Map(A0,0,100,0, maxY);
+      lastPoint.Y = maxY - Map(A0, 0, 100, 0, maxY);
       points[lastPointNum] = lastPoint;
 
       fakeGraph.Points = points;
@@ -408,9 +493,18 @@ namespace HAXCSolar
       }
     }
 
+
+
     #endregion INotifyPropertyChanged Implementation
 
+    private void PopupCloseButton_Click(object sender, RoutedEventArgs e)
+    {
+      SettingsPopup.IsOpen = false;
+    }
 
-
+    private void SettingsButton_Click(object sender, RoutedEventArgs e)
+    {
+      SettingsPopup.IsOpen = true;
+    }
   }
 }
